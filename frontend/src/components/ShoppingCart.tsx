@@ -32,7 +32,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ token, isOpen, onClose, onC
   const [loading, setLoading] = useState(false);
   const [checkingOut, setCheckingOut] = useState(false);
 
-  const API_BASE_URL = 'http://localhost:8000';
+  const API_BASE_URL = 'http://localhost:8001';
 
   useEffect(() => {
     if (isOpen) {

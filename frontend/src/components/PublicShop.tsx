@@ -17,19 +17,11 @@ interface Item {
   creator_username?: string;
 }
 
-interface User {
-  id: number;
-  email: string;
-  username: string;
-  role: 'customer' | 'admin';
-  is_active: boolean;
-}
-
 interface PublicShopProps {
-  onLogin: (token: string, user: User) => void;
+  // No longer needs onLogin prop - handled by context
 }
 
-const PublicShop: React.FC<PublicShopProps> = ({ onLogin }) => {
+const PublicShop: React.FC<PublicShopProps> = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
@@ -40,10 +32,9 @@ const PublicShop: React.FC<PublicShopProps> = ({ onLogin }) => {
   const [sortOrder, setSortOrder] = useState<string>('desc');
   const [inStockOnly, setInStockOnly] = useState<boolean>(true);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [selectedItemForPurchase, setSelectedItemForPurchase] = useState<number | null>(null);
   const [purchaseQuantities, setPurchaseQuantities] = useState<{[key: number]: number}>({});
 
-  const API_BASE_URL = 'http://localhost:8000';
+  const API_BASE_URL = 'http://localhost:8001';
 
   useEffect(() => {
     fetchItems();
@@ -95,11 +86,6 @@ const PublicShop: React.FC<PublicShopProps> = ({ onLogin }) => {
     setPurchaseQuantities({ ...purchaseQuantities, [itemId]: validQuantity });
   };
 
-  const handleLoginSuccess = (token: string, user: User) => {
-    onLogin(token, user);
-    setShowLoginModal(false);
-    setSelectedItemForPurchase(null);
-  };
 
   const filteredItems = items;
 
@@ -762,7 +748,7 @@ const PublicShop: React.FC<PublicShopProps> = ({ onLogin }) => {
             >
               ✕
             </button>
-            <Login onLogin={handleLoginSuccess} />
+            <Login />
           </div>
         </div>
       )}

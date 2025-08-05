@@ -126,6 +126,10 @@ def create_purchase(db: Session, purchase: PurchaseCreate, customer_id: int):
     db.refresh(db_purchase)
     return db_purchase
 
+def get_purchase(db: Session, purchase_id: int):
+    """Get a purchase by ID"""
+    return db.query(Purchase).filter(Purchase.id == purchase_id).first()
+
 def get_user_purchases(db: Session, user_id: int, skip: int = 0, limit: int = 100):
     return (db.query(Purchase)
             .options(joinedload(Purchase.item), joinedload(Purchase.customer))
