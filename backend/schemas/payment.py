@@ -10,7 +10,7 @@ class PaymentBase(BaseModel):
     currency: str = Field(default="usd", description="Payment currency")
     provider: PaymentProvider = Field(..., description="Payment provider")
     payment_method: Optional[str] = Field(None, description="Payment method type")
-    metadata: Optional[Dict[str, Any]] = Field(None, description="Additional metadata")
+    payment_metadata: Optional[Dict[str, Any]] = Field(None, description="Additional metadata")
 
 class PaymentCreate(PaymentBase):
     purchase_id: int = Field(..., description="Associated purchase ID")
@@ -27,7 +27,7 @@ class PaymentUpdate(BaseModel):
     provider_payment_id: Optional[str] = None
     provider_charge_id: Optional[str] = None
     payment_method: Optional[str] = None
-    metadata: Optional[Dict[str, Any]] = None
+    payment_metadata: Optional[Dict[str, Any]] = None
     failure_code: Optional[str] = None
     failure_message: Optional[str] = None
     succeeded_at: Optional[datetime] = None
@@ -69,7 +69,7 @@ class RefundCreate(RefundBase):
 class RefundUpdate(BaseModel):
     status: Optional[RefundStatus] = None
     provider_refund_id: Optional[str] = None
-    metadata: Optional[Dict[str, Any]] = None
+    refund_metadata: Optional[Dict[str, Any]] = None
     admin_notes: Optional[str] = None
     failure_code: Optional[str] = None
     failure_message: Optional[str] = None
@@ -81,7 +81,7 @@ class RefundResponse(RefundBase):
     payment_id: int
     status: RefundStatus
     provider_refund_id: Optional[str] = None
-    metadata: Optional[Dict[str, Any]] = None
+    refund_metadata: Optional[Dict[str, Any]] = None
     failure_code: Optional[str] = None
     failure_message: Optional[str] = None
     created_at: datetime
@@ -99,7 +99,7 @@ class PaymentIntentCreate(BaseModel):
     provider: PaymentProvider = Field(..., description="Payment provider")
     payment_method_type: Optional[str] = Field("card", description="Payment method type")
     return_url: Optional[str] = Field(None, description="Return URL for redirects")
-    metadata: Optional[Dict[str, Any]] = Field(None, description="Additional metadata")
+    payment_metadata: Optional[Dict[str, Any]] = Field(None, description="Additional metadata")
 
 class PaymentIntentResponse(BaseModel):
     payment_id: int

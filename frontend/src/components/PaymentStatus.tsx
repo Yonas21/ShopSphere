@@ -58,11 +58,11 @@ export const PaymentStatus: React.FC<PaymentStatusProps> = ({
       let url = '';
 
       if (paymentId) {
-        url = `http://localhost:8000/api/payments/${paymentId}`;
+        url = `http://localhost:8001/api/payments/${paymentId}`;
       } else if (purchaseId) {
-        url = `http://localhost:8000/api/payments/purchase/${purchaseId}`;
+        url = `http://localhost:8001/api/payments/purchase/${purchaseId}`;
       } else {
-        url = 'http://localhost:8000/api/payments/';
+        url = 'http://localhost:8001/api/payments/';
       }
 
       const response = await axios.get(url, {

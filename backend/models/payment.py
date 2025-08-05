@@ -43,7 +43,7 @@ class Payment(Base):
     
     # Payment metadata
     payment_method = Column(String, nullable=True)  # card, paypal, etc.
-    metadata = Column(JSON, nullable=True)  # Store provider-specific data
+    payment_metadata = Column(JSON, nullable=True)  # Store provider-specific data
     
     # Failure information
     failure_code = Column(String, nullable=True)
@@ -76,7 +76,7 @@ class Refund(Base):
     provider_refund_id = Column(String, nullable=True, index=True)
     
     # Refund metadata
-    metadata = Column(JSON, nullable=True)
+    refund_metadata = Column(JSON, nullable=True)
     admin_notes = Column(Text, nullable=True)
     
     # Failure information

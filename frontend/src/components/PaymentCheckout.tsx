@@ -52,7 +52,7 @@ export const PaymentCheckout: React.FC<PaymentCheckoutProps> = ({
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:8000/api/payments/intent',
+        'http://localhost:8001/api/payments/intent',
         {
           purchase_id: purchaseId,
           provider: provider,
@@ -174,10 +174,10 @@ export const PaymentCheckout: React.FC<PaymentCheckoutProps> = ({
         <div style={{ marginBottom: '10px' }}>
           <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
             <input
-              type=\"radio\"
-              value=\"stripe\"
+              type="radio"
+              value="stripe"
               checked={paymentMethod === 'stripe'}
-              onChange={(e) => setPaymentMethod(e.target.value as 'stripe')}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPaymentMethod(e.target.value as 'stripe')}
               style={{ marginRight: '8px' }}
             />
             <span>Credit Card (Stripe)</span>
@@ -187,10 +187,10 @@ export const PaymentCheckout: React.FC<PaymentCheckoutProps> = ({
         <div>
           <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
             <input
-              type=\"radio\"
-              value=\"paypal\"
+              type="radio"
+              value="paypal"
               checked={paymentMethod === 'paypal'}
-              onChange={(e) => setPaymentMethod(e.target.value as 'paypal')}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPaymentMethod(e.target.value as 'paypal')}
               style={{ marginRight: '8px' }}
             />
             <span>PayPal</span>

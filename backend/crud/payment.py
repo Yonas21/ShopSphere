@@ -19,7 +19,7 @@ class PaymentCRUD:
             currency=payment.currency,
             provider=payment.provider,
             payment_method=payment.payment_method,
-            metadata=payment.metadata
+            payment_metadata=payment.payment_metadata
         )
         db.add(db_payment)
         db.commit()

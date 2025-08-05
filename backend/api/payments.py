@@ -51,7 +51,7 @@ async def create_payment_intent(
         amount=purchase.total_price,
         provider=intent_data.provider,
         payment_method=intent_data.payment_method_type,
-        metadata=intent_data.metadata or {}
+        payment_metadata=intent_data.payment_metadata or {}
     )
     
     payment = payment_crud.create_payment(db, payment_create, current_user.id)
