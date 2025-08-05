@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
-interface LoginProps {
-  onLogin: (token: string, user: any) => void;
-}
+import { useApp } from '../contexts/AppContext';
 
 interface LoginFormData {
   username: string;
   password: string;
 }
 
-const Login: React.FC<LoginProps> = ({ onLogin }) => {
+const Login: React.FC = () => {
+  const { login } = useApp();
   const [formData, setFormData] = useState<LoginFormData>({
     username: '',
     password: ''
@@ -19,7 +17,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const API_BASE_URL = 'http://localhost:8000';
+  const API_BASE_URL = 'http://localhost:8001';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,7 +34,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
         }
       });
 
-      onLogin(access_token, userResponse.data);
+      login(access_token, userResponse.data);
       setFormData({ username: '', password: '' });
     } catch (error: any) {
       console.error('Login error:', error);

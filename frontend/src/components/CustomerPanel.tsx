@@ -40,7 +40,6 @@ const CustomerPanel: React.FC<CustomerPanelProps> = ({ token, currentUser }) => 
   const [purchaseQuantities, setPurchaseQuantities] = useState<{[key: number]: number}>({});
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [activeTab, setActiveTab] = useState<'shop' | 'orders'>('shop');
-  const [cartItems, setCartItems] = useState<{[key: number]: number}>({});
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
   const [minPrice, setMinPrice] = useState<string>('');
@@ -49,7 +48,7 @@ const CustomerPanel: React.FC<CustomerPanelProps> = ({ token, currentUser }) => 
   const [sortOrder, setSortOrder] = useState<string>('desc');
   const [inStockOnly, setInStockOnly] = useState<boolean>(true);
 
-  const API_BASE_URL = 'http://localhost:8000';
+  const API_BASE_URL = 'http://localhost:8001';
 
   useEffect(() => {
     fetchItems();

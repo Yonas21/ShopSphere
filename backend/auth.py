@@ -67,3 +67,6 @@ def get_customer_user(current_user: User = Depends(require_roles([UserRole.CUSTO
 
 def get_admin_or_customer_user(current_user: User = Depends(require_roles([UserRole.ADMIN, UserRole.CUSTOMER]))):
     return current_user
+
+# Alias for backwards compatibility
+require_admin = get_admin_user

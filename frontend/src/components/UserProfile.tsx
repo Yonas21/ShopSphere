@@ -56,7 +56,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
     confirm_password: ''
   });
 
-  const API_BASE_URL = 'http://localhost:8000';
+  const API_BASE_URL = 'http://localhost:8001';
 
   const getStatusColor = (status: string) => {
     const colors: { [key: string]: { bg: string; text: string } } = {
