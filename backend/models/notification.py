@@ -70,7 +70,7 @@ class Notification(Base):
     email_text_content = Column(Text, nullable=True)
     
     # Metadata and customization
-    metadata = Column(JSON, nullable=True)
+    notification_metadata = Column(JSON, nullable=True)
     action_url = Column(String(500), nullable=True)  # URL for action buttons
     action_text = Column(String(100), nullable=True)  # Text for action button
     
