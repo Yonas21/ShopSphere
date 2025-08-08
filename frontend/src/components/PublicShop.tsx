@@ -32,9 +32,10 @@ const PublicShop: React.FC<PublicShopProps> = () => {
   const [sortOrder, setSortOrder] = useState<string>('desc');
   const [inStockOnly, setInStockOnly] = useState<boolean>(true);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [selectedItemForPurchase, setSelectedItemForPurchase] = useState<number | null>(null);
   const [purchaseQuantities, setPurchaseQuantities] = useState<{[key: number]: number}>({});
 
-  const API_BASE_URL = 'http://localhost:8001';
+  const API_BASE_URL = 'http://localhost:8000';
 
   useEffect(() => {
     fetchItems();
