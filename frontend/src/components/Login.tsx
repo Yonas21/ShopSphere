@@ -17,7 +17,7 @@ const Login: React.FC = () => {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const API_BASE_URL = 'http://localhost:8001';
+  const API_BASE_URL = 'http://localhost:8000';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,8 +33,7 @@ const Login: React.FC = () => {
           Authorization: `Bearer ${access_token}`
         }
       });
-
-      login(access_token, userResponse.data);
+      login(formData.username, formData.password);
       setFormData({ username: '', password: '' });
     } catch (error: any) {
       console.error('Login error:', error);
