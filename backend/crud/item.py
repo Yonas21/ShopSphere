@@ -5,6 +5,12 @@ from models.user import User
 from schemas.item import ItemCreate, ItemUpdate, PurchaseCreate, OrderStatusUpdate
 from models.item import OrderStatus
 from typing import List, Optional
+import hashlib
+import json
+from utils.cache import cache_get, cache_set, cache_delete, cache_invalidator
+import logging
+
+logger = logging.getLogger("app.crud.item")
 
 def create_item(db: Session, item: ItemCreate, creator_id: int):
     db_item = Item(
@@ -19,10 +25,32 @@ def create_item(db: Session, item: ItemCreate, creator_id: int):
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
+    
+    # Invalidate relevant caches
+    cache_invalidator.invalidate_item_cache(db_item.id)
+    cache_invalidator.invalidate_category_cache(item.category)
+    
+    logger.info(f"Created item {db_item.id}: {db_item.name}")
     return db_item
 
 def get_item(db: Session, item_id: int):
-    return db.query(Item).options(joinedload(Item.creator)).filter(Item.id == item_id).first()
+    # Try to get from cache first
+    cache_key = f"item:{item_id}"
+    cached_item = cache_get(cache_key)
+    
+    if cached_item is not None:
+        logger.debug(f"Item {item_id} retrieved from cache")
+        return cached_item
+    
+    # Get from database
+    db_item = db.query(Item).options(joinedload(Item.creator)).filter(Item.id == item_id).first()
+    
+    if db_item:
+        # Cache for 10 minutes
+        cache_set(cache_key, db_item, ttl=600)
+        logger.debug(f"Item {item_id} cached from database")
+    
+    return db_item
 
 def get_items(
     db: Session, 
@@ -37,6 +65,32 @@ def get_items(
     sort_order: str = "desc",
     active_only: bool = True
 ):
+    # Generate cache key from parameters
+    params = {
+        "skip": skip,
+        "limit": limit,
+        "category": category,
+        "search": search,
+        "min_price": min_price,
+        "max_price": max_price,
+        "in_stock_only": in_stock_only,
+        "sort_by": sort_by,
+        "sort_order": sort_order,
+        "active_only": active_only
+    }
+    
+    # Create hash of parameters for cache key
+    params_str = json.dumps(params, sort_keys=True)
+    params_hash = hashlib.md5(params_str.encode()).hexdigest()
+    cache_key = f"items:list:{params_hash}"
+    
+    # Try to get from cache (shorter TTL for dynamic data)
+    cached_items = cache_get(cache_key)
+    if cached_items is not None:
+        logger.debug("Items list retrieved from cache")
+        return cached_items
+    
+    # Build query
     query = db.query(Item).options(joinedload(Item.creator))
     
     if active_only:
@@ -71,7 +125,13 @@ def get_items(
     else:
         query = query.order_by(desc(sort_column))
     
-    return query.offset(skip).limit(limit).all()
+    items = query.offset(skip).limit(limit).all()
+    
+    # Cache results for 5 minutes (shorter for dynamic lists)
+    cache_set(cache_key, items, ttl=300)
+    logger.debug(f"Items list cached ({len(items)} items)")
+    
+    return items
 
 def update_item(db: Session, item_id: int, item_update: ItemUpdate):
     db_item = db.query(Item).filter(Item.id == item_id).first()
