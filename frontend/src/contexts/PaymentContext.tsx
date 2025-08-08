@@ -212,7 +212,7 @@ export const PaymentProvider: React.FC<PaymentProviderProps> = ({ children }) =>
   const [state, dispatch] = useReducer(paymentReducer, initialState);
   const { state: appState, showNotification } = useApp();
 
-  const API_BASE_URL = 'http://localhost:8001';
+  const API_BASE_URL = 'http://localhost:8000';
 
   // Create payment intent
   const createPaymentIntent = async (purchaseId: number, provider: 'stripe' | 'paypal'): Promise<PaymentIntent> => {

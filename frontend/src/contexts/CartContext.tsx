@@ -202,7 +202,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
   const { state: appState, showNotification } = useApp();
 
-  const API_BASE_URL = 'http://localhost:8001';
+  const API_BASE_URL = 'http://localhost:8000';
 
   // Load cart from API
   const loadCart = async (): Promise<void> => {

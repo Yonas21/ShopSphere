@@ -171,7 +171,7 @@ interface AppProviderProps {
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialState);
 
-  const API_BASE_URL = 'http://localhost:8001';
+  const API_BASE_URL = 'http://localhost:8000';
 
   // Setup axios interceptors
   useEffect(() => {
@@ -216,24 +216,30 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       formData.append('username', username);
       formData.append('password', password);
 
-      const response = await axios.post(`${API_BASE_URL}/api/users/login`, formData, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      });
+      const response = await axios.post(`${API_BASE_URL}/api/users/login`, {username: username, password: password});
+      console.log("response**********************", response)
 
-      const { access_token, user } = response.data;
+      const { access_token } = response.data;
       
       localStorage.setItem('token', access_token);
       
       dispatch({
         type: 'LOGIN_SUCCESS',
-        payload: { user, token: access_token }
+        payload: {
+          user: {
+            id: 1,
+            username: username,
+            email: "",
+            role: 'customer',
+            is_active: false,
+            created_at: ""
+          }, token: access_token
+        }
       });
 
       showNotification({
         type: 'success',
-        message: `Welcome back, ${user.username}!`
+        message: `Welcome back, ${username}!`
       });
 
     } catch (error: any) {
