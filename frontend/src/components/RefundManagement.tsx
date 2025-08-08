@@ -63,7 +63,7 @@ export const RefundManagement: React.FC = () => {
       
       if (selectedTab === 'payments') {
         const response = await axios.get(
-          'http://localhost:8001/api/payments/admin/all?status=succeeded',
+          'http://localhost:8000/api/payments/admin/all?status=succeeded',
           {
             headers: { Authorization: `Bearer ${token}` }
           }
@@ -71,7 +71,7 @@ export const RefundManagement: React.FC = () => {
         setPayments(response.data);
       } else {
         const response = await axios.get(
-          'http://localhost:8001/api/payments/admin/refunds',
+          'http://localhost:8000/api/payments/admin/refunds',
           {
             headers: { Authorization: `Bearer ${token}` }
           }
@@ -117,7 +117,7 @@ export const RefundManagement: React.FC = () => {
     try {
       const token = localStorage.getItem('token');
       await axios.post(
-        'http://localhost:8001/api/payments/refunds',
+        'http://localhost:8000/api/payments/refunds',
         {
           payment_id: selectedPayment.id,
           amount: parseFloat(refundForm.amount),

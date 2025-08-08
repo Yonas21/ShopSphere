@@ -52,7 +52,7 @@ export const PaymentCheckout: React.FC<PaymentCheckoutProps> = ({
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:8001/api/payments/intent',
+        'http://localhost:8000/api/payments/intent',
         {
           purchase_id: purchaseId,
           provider: provider,
